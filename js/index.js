@@ -1,11 +1,11 @@
 // 自定义抽奖弹窗组件
 const CustomLuckyDrawDrawer = {
-  data () {
+  data() {
     return {
       // 显示状态
       visible: false,
       // 自定义列表
-      customs: []
+      customs: [],
     }
   },
   template: `
@@ -59,14 +59,14 @@ const CustomLuckyDrawDrawer = {
   `,
   methods: {
     // 显示抽屉
-    showDrawer () {
+    showDrawer() {
       // 获取自定义列表
       this.customs = JSON.parse(localStorage.getItem('customs')) || []
       // 显示
       this.visible = true
     },
     // 关闭抽屉
-    onClose () {
+    onClose() {
       // 过滤空名称奖项
       const customs = this.customs.filter(item => {
         return !!item.name
@@ -81,25 +81,25 @@ const CustomLuckyDrawDrawer = {
       this.$emit('close')
     },
     // 新增
-    touchAdd () {
+    touchAdd() {
       const custom = {
         name: undefined,
-        tag: undefined
+        tag: undefined,
       }
       this.customs.push(custom)
     },
     // 删除
-    touchDelete (index) {
+    touchDelete(index) {
       this.customs.splice(index, 1)
-    }
-  }
+    },
+  },
 }
 
 // 主视图
 new Vue({
   el: '#app',
   components: {
-    CustomLuckyDrawDrawer
+    CustomLuckyDrawDrawer,
   },
   template: `
     <div class="import-view">
@@ -174,7 +174,7 @@ new Vue({
       <custom-lucky-draw-drawer ref="custom-lucky-draw-drawer" @close="onCloseCustom"></custom-lucky-draw-drawer>
     </div>
   `,
-  data () {
+  data() {
     return {
       // 0 默认抽奖模式，1 自定义抽奖模式
       modeType: 0,
@@ -187,10 +187,10 @@ new Vue({
       // 是否导入了用户列表
       isImportUsers: false,
       // 是否有自定义奖项配置
-      isImportMode: false
+      isImportMode: false,
     }
   },
-  created () {
+  created() {
     // 获取抽奖模式
     const modeType = localStorage.getItem('modeType')
     if (modeType) {
@@ -198,7 +198,7 @@ new Vue({
     } else {
       this.modeType = 0
     }
-    // 获取抽奖用户
+    // 获取抽奖用户 修改为固定用户
     const users = localStorage.getItem('users')
     this.isImportUsers = users ? JSON.parse(users).length : false
     // 获取自定义抽奖项
@@ -206,25 +206,25 @@ new Vue({
   },
   methods: {
     // 跳转
-    touchLuckyDrawPage () {
+    touchLuckyDrawPage() {
       window.location.href = './lucky-draw.html'
     },
     // 抽奖模式切换
-    handleImportModeChange (e) {
+    handleImportModeChange(e) {
       // 存储到 localStorage
       localStorage.setItem('modeType', e)
     },
     // 自定义抽奖组件
-    touchCustom () {
-      this.$refs["custom-lucky-draw-drawer"].showDrawer()
+    touchCustom() {
+      this.$refs['custom-lucky-draw-drawer'].showDrawer()
     },
     // 关闭自定义抽奖窗口
-    onCloseCustom () {
+    onCloseCustom() {
       const customs = localStorage.getItem('customs')
       this.isImportMode = customs ? JSON.parse(customs).length : false
     },
     // 清空数据
-    clearData () {
+    clearData() {
       // 清空数据
       localStorage.clear()
       // 清空状态
@@ -235,11 +235,11 @@ new Vue({
       this.$message.success('清理成功')
     },
     // 上传之前检查
-    beforeUpload (file, fileList) {
+    beforeUpload(file, fileList) {
       return true
     },
     // 自定义上传名单
-    customRequest (data) {
+    customRequest(data) {
       // 数据记录
       this.users = []
       // 进入加载
@@ -286,7 +286,7 @@ new Vue({
       })
     },
     // 获取单个用户数据，传入单元格字段
-    userJson (item) {
+    userJson(item) {
       // 分割字符串
       const items = item.split('-')
       // 如果有3个字段
@@ -295,7 +295,7 @@ new Vue({
           id: this.users.length,
           name: items[0],
           department: items[1],
-          number: items[2]
+          number: items[2],
         }
       }
       // 如果有2个字段
@@ -306,18 +306,18 @@ new Vue({
           id: this.users.length,
           name: items[0],
           department: isNumber ? '' : items[1],
-          number: isNumber ? items[1] : 0
+          number: isNumber ? items[1] : 0,
         }
-      } 
+      }
       // 如果有1个字段
       if (items.length >= 1) {
         return {
           id: this.users.length,
           name: items[0],
           department: '',
-          number: 0
+          number: 0,
         }
       }
-    }
-  }
+    },
+  },
 })
